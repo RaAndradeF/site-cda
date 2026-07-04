@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+import EpisodeList from '../components/EpisodeList.tsx';
+import { fetchPodcastFeed } from '../lib/fetchRss';
+
+const feed = await fetchPodcastFeed();
+
+const episodes = feed.episodes.map((episode) => ({
+  slug: episode.slug,
+  title: episode.title,
+  description: episode.description,
+  pubDate: episode.pubDate.toISOString(),
+  duration: episode.duration,
+  image: episode.image,
+  tags: [] as string[]
+}));
+---
+
+<Base
+  title="Episódios"
+  description={`Todos os episodios de ${feed.channel.title}. Ouca, busque e explore.`}
+>
+  <section class="mx-auto max-w-6xl px-4 py-14">
+    <div class="text-center mb-10">
+      <h1 class="text-4xl font-black text-text-primary">Episódios</h1>
+      <p class="mt-3 text-text-secondary">
+        {episodes.length} episódios disponíveis. Busque por título, tema ou descrição.
+      </p>
+    </div>
+
+    <EpisodeList client:load episodes={episodes} />
+  </section>
+</Base>
