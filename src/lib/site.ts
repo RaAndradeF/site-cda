@@ -9,7 +9,7 @@ export const SITE_LINKS = {
   applePodcasts: 'https://podcasts.apple.com/us/podcast/companhia-do-aventureiro/id1514517061',
   googlePodcasts: '#',
   deezer: 'https://www.deezer.com/br/show/1695012',
-  pocketCast: 'https://pca.st/podcast/7533d1f0-7d25-0138-ee02-0acc26574db2',
+  pocketCasts: 'https://pca.st/podcast/7533d1f0-7d25-0138-ee02-0acc26574db2',
   loja: '#'
 };
 

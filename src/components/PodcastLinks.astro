@@ -1,14 +1,20 @@
 ---
+//Lucide-React
 import { Music, Rss, Headphones, ShoppingBag } from 'lucide-react';
+//React-Icons
+import { FaSpotify, FaDeezer, FaRssSquare} from 'react-icons/fa';
+import { SiApplepodcasts,SiPocketcasts } from 'react-icons/si';
+
 import { SITE_LINKS } from '../lib/site';
 
 //Retirado link de loja temporariamente
 const platforms = [
-  { href: SITE_LINKS.spotify, label: 'Spotify', Icon: Music },
-  { href: SITE_LINKS.applePodcasts, label: 'Apple Podcasts', Icon: Headphones },
-  { href: SITE_LINKS.deezer, label: 'Deezer', Icon: Headphones },
+  { href: SITE_LINKS.spotify, label: 'Spotify', Icon: FaSpotify},
+  { href: SITE_LINKS.applePodcasts, label: 'Apple Podcasts', Icon: SiApplepodcasts },
+  { href: SITE_LINKS.deezer, label: 'Deezer', Icon: FaDeezer },
+  { href: SITE_LINKS.pocketCasts, label: 'Pocketcasts', Icon: SiPocketcasts },
   //{ href: SITE_LINKS.googlePodcasts, label: 'Google Podcasts', Icon: Headphones },
-  { href: SITE_LINKS.rss, label: 'RSS', Icon: Rss },
+  { href: SITE_LINKS.rss, label: 'RSS', Icon: FaRssSquare },
   //{ href: SITE_LINKS.loja, label: 'Loja', Icon: ShoppingBag }
 ];
 ---
