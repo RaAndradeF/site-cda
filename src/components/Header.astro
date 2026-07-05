@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import headerIcon from '../assets/images/headerIcon.png';
+
 const navLinks = [
   { href: '/', label: 'Início' },
   { href: '/podcast', label: 'Podcast' },
@@ -15,7 +18,7 @@ const currentPath = Astro.url.pathname;
   <div class="mx-auto max-w-6xl px-4 flex items-center justify-between h-16">
     <a href="/" class="flex items-center gap-2 font-bold text-lg text-accent-yellow">
       <span class="inline-block h-9 w-9 rounded-full bg-transparent text-white grid place-items-center font-black">
-        <img src="src/assets/images/headerIcon.png" alt="">
+        <Image src={headerIcon} alt="Descrição da imagem" width={200} height={200} />
       </span>
       <span class="hidden sm:inline">Companhia do Aventureiro</span>
     </a>
