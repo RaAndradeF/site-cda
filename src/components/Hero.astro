@@ -1,6 +1,9 @@
 ---
 import PodcastLinks from './PodcastLinks.astro';
 import { SITE_TAGLINE } from '../lib/site';
+
+import { Image } from 'astro:assets';
+import brand from '../assets/images/brand.png';
 ---
 
 <section class="relative overflow-hidden bg-gradient-to-br from-primary-dark via-primary to-secondary-dark">
@@ -9,7 +12,7 @@ import { SITE_TAGLINE } from '../lib/site';
 
   <div class="relative mx-auto max-w-6xl px-4 py-20 sm:py-28 text-center">
     <span class="inline-block mx-auto mb-6 h-64 w-64 rounded-full bg-transparent text-white grid place-items-center font-black text-2xl shadow-lg">
-      <img src="src/assets/images/brand.png" alt="Logo da Companhia do Aventureiro">
+      <Image src={brand} alt="Logo da Companhia do Aventureiro"/>
     </span>
 
     <h1 class="text-4xl sm:text-6xl font-black tracking-tight text-text-primary">
