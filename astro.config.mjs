@@ -8,7 +8,7 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 
 export default defineConfig({
-  site: 'https://raandradef.github.io',
+  site: 'https://raandradef.github.io/site-cda',
   base: '/site-cda',
   integrations: [react(), partytown()],
   vite: {
