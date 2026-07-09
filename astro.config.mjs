@@ -6,7 +6,7 @@ import partytown from '@astrojs/partytown';
 import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
-// teste deploy
+
 export default defineConfig({
   site: 'https://raandradef.github.io',
   integrations: [react(), partytown()],
