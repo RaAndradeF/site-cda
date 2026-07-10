@@ -1,4 +1,10 @@
-@import "tailwindcss";
+/*código original/*
+/*@import "tailwindcss";*/
+
+/* Adicionado para teste de deploy*/
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @theme {
   /* Paleta de cores do projeto */
