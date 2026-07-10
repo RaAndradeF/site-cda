@@ -4,12 +4,13 @@ Guia passo a passo para publicar este site em `https://raandradef.github.io/site
 
 ## O que estava dando errado
 
-Investigando o histórico do repositório, encontrei duas causas concretas para os deploys anteriores falharem:
+Investigando o histórico do repositório e os logs do primeiro run do workflow, encontrei três causas concretas:
 
 1. **O workflow estava no lugar errado.** O arquivo de deploy foi criado em `github/workflows/deploy.yml` (pasta sem o ponto). O GitHub só reconhece workflows dentro de **`.github/workflows/`** (com o ponto no início). Como a pasta estava errada, a Action nunca era registrada nem executada — o deploy simplesmente não acontecia, sem erro visível.
 2. **`global.css` tinha diretivas do Tailwind v3.** Em algum teste anterior, o conteúdo de `src/styles/global.css` foi trocado para `@tailwind base; @tailwind components; @tailwind utilities;` (sintaxe do Tailwind v3). Este projeto usa **Tailwind v4**, que usa `@import "tailwindcss";` + bloco `@theme`. Essas diretivas antigas não fazem nada no v4, então o site ficaria sem estilo algum se essa versão fosse publicada.
+3. **A Action usa Node 20 por padrão, mas o projeto exige Node ≥22.12.** Depois de corrigir os dois pontos acima, o workflow passou a rodar — mas o job `build` falhou com `Node.js v20.20.2 is not supported by Astro! Please upgrade Node.js to a supported version: ">=22.12.0"`. O `withastro/action@v3` baixa Node 20 se você não disser o contrário. A correção é passar `node-version: 22` explicitamente para a action.
 
-Já corrigi os dois problemas no projeto local (detalhes na seção 1). Falta você revisar, commitar, enviar (push) e configurar o GitHub Pages pela interface do GitHub (seções 2 e 3).
+Já corrigi os três problemas no projeto local (detalhes na seção 1). Falta você revisar, commitar, enviar (push) e configurar o GitHub Pages pela interface do GitHub (seções 2 e 3).
 
 ---
 
@@ -20,7 +21,7 @@ Confira o `git status` — você verá estas mudanças pendentes de commit:
 | Arquivo | O que mudou |
 |---|---|
 | `astro.config.mjs` | `site` voltou para `https://raandradef.github.io` e `base` voltou para `/site-cda` (necessário porque o site é publicado em um subcaminho, não em um domínio próprio) |
-| `.github/workflows/deploy.yml` | **Novo arquivo**, no lugar certo (com o ponto). Workflow limpo que builda e publica o site a cada push na branch `master` |
+| `.github/workflows/deploy.yml` | **Novo arquivo**, no lugar certo (com o ponto), com `node-version: 22` explícito na action de build. Workflow limpo que builda e publica o site a cada push na branch `master` |
 | `github/workflows/deploy.yml` | Removido (pasta errada, sem o ponto) |
 | `src/styles/global.css` | Revertido para a sintaxe correta do Tailwind v4 (`@import "tailwindcss";`) |
 | `tailwind.config.js` | Removido — este projeto **não usa** esse arquivo; a configuração do tema fica inteira em `src/styles/global.css` (bloco `@theme`), que é como o Tailwind v4 funciona |
@@ -53,6 +54,8 @@ jobs:
 
       - name: Install, build, and upload your site
         uses: withastro/action@v3
+        with:
+          node-version: 22
 
   deploy:
     needs: build
@@ -68,11 +71,19 @@ jobs:
 
 A action `withastro/action` já sabe rodar `npm install` + `npm run build` e empacotar a pasta `dist/` corretamente — não precisa escrever esses passos manualmente.
 
-Já rodei `npm run build` localmente com a configuração corrigida e confirmei que os 40 arquivos são gerados sem erro, com todos os links internos prefixados com `/site-cda/`.
+Já rodei `npm run build` localmente com a configuração corrigida (inclusive com `npm ci`, para reproduzir exatamente o ambiente do runner) e confirmei que os 40 arquivos são gerados sem erro, com todos os links internos prefixados com `/site-cda/`.
 
 ### O que você precisa fazer agora (linha de comando)
 
-Na raiz do projeto (`c:\Projetos\site-cda`):
+Se você já commitou e enviou a primeira correção (localização do workflow + `global.css`) e o build falhou por causa do Node 20, falta só enviar o ajuste do `node-version: 22`:
+
+```bash
+git add .github/workflows/deploy.yml
+git commit -m "Fixa Node 22 na Action de build do GitHub Pages"
+git push origin master
+```
+
+Se ainda não tiver enviado nada, use o commit único com tudo:
 
 ```bash
 git add astro.config.mjs src/styles/global.css .github/workflows/deploy.yml tailwind.config.js github/workflows/deploy.yml
@@ -124,6 +135,7 @@ Se preferir disparar o deploy manualmente sem precisar de um novo commit, use o 
 |---|---|---|
 | Nenhum workflow aparece na aba Actions | Arquivo fora de `.github/workflows/` (ex: `github/workflows/`, sem o ponto) | Confirme o caminho exato com `git ls-files \| grep workflows` |
 | Workflow aparece mas falha no job `build` | Erro de build (dependência faltando, TypeScript, etc.) | Abra o log do job `build` na aba Actions e leia o erro — geralmente aparece exatamente qual arquivo/linha falhou |
+| `build` falha com `Node.js v20.x.x is not supported by Astro!` | `withastro/action` baixou Node 20 por padrão, mas o projeto exige `>=22.12.0` (`engines` no `package.json`) | Confirme que `.github/workflows/deploy.yml` tem `with: { node-version: 22 }` no passo `withastro/action` |
 | Deploy funciona, mas todas as páginas dão 404 | `base` não corresponde ao nome do repositório, ou `Source` nas configurações de Pages não está em "GitHub Actions" | Confira `astro.config.mjs` (`base: '/site-cda'`) e a configuração da seção 2 |
 | Site publica mas aparece sem nenhum estilo (CSS quebrado) | `global.css` com sintaxe do Tailwind v3 (`@tailwind base/components/utilities`) em vez da v4 | Já corrigido nesta rodada — confirme que o arquivo local tem `@import "tailwindcss";` no topo |
 | Links internos (menu, cards de episódio) levam para página em branco/404 | Alguma página ou componente com link absoluto hardcoded (`href="/podcast"`) em vez de usar o helper `withBase()` | Todos os componentes já usam `withBase()` de `src/lib/site.ts` — se criar novos links internos, sempre use esse helper |
