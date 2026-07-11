@@ -1,0 +1,83 @@
+---
+import { Image } from 'astro:assets';
+import headerIcon from '../assets/images/headerIcon.png';
+
+const navLinks = [
+  { href: '/', label: 'Início' },
+  { href: '/podcast', label: 'Podcast' },
+  { href: '/sobre', label: 'Sobre' },
+  { href: '/envie', label: 'Envie sua História' },
+  { href: '/apoie', label: 'Apoie' },
+  { href: '/contato', label: 'Contato' }
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-50 bg-bg-primary/95 backdrop-blur border-b border-primary-light/20">
+  <div class="mx-auto max-w-6xl px-4 flex items-center justify-between h-16">
+    <a href="/" class="flex items-center gap-2 font-bold text-lg text-accent-yellow">
+      <span class="inline-block h-9 w-9 rounded-full bg-transparent text-white grid place-items-center font-black">
+        <Image src={headerIcon} alt="Ícone" width={200} height={200} />
+      </span>
+      <span class="hidden sm:inline">Companhia do Aventureiro</span>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-6">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          class={`text-sm font-medium transition-colors hover:text-accent-yellow ${
+            currentPath === link.href ? 'text-accent-yellow' : 'text-text-secondary'
+          }`}
+        >
+          {link.label}
+        </a>
+      ))}
+    </nav>
+
+    <button
+      id="menu-toggle"
+      type="button"
+      aria-label="Abrir menu"
+      aria-expanded="false"
+      class="md:hidden inline-flex items-center justify-center h-10 w-10 rounded-lg text-text-primary hover:bg-primary-light/20"
+    >
+      <svg id="icon-open" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="4" x2="20" y1="6" y2="6"></line>
+        <line x1="4" x2="20" y1="12" y2="12"></line>
+        <line x1="4" x2="20" y1="18" y2="18"></line>
+      </svg>
+      <svg id="icon-close" class="hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" x2="6" y1="6" y2="18"></line>
+        <line x1="6" x2="18" y1="6" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  <nav id="mobile-menu" class="hidden md:hidden flex flex-col gap-1 px-4 pb-4 bg-bg-primary border-b border-primary-light/20">
+    {navLinks.map((link) => (
+      <a
+        href={link.href}
+        class={`py-2 text-sm font-medium ${currentPath === link.href ? 'text-accent-yellow' : 'text-text-secondary'}`}
+      >
+        {link.label}
+      </a>
+    ))}
+  </nav>
+</header>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+  const iconOpen = document.getElementById('icon-open');
+  const iconClose = document.getElementById('icon-close');
+
+  toggle?.addEventListener('click', () => {
+    const isOpen = !menu?.classList.contains('hidden');
+    menu?.classList.toggle('hidden');
+    iconOpen?.classList.toggle('hidden');
+    iconClose?.classList.toggle('hidden');
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+  });
+</script>

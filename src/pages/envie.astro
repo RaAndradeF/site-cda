@@ -1,0 +1,25 @@
+---
+import Base from '../layouts/Base.astro';
+import ContactForm from '../components/ContactForm.astro';
+---
+
+<Base
+  title="Envie sua História"
+  description="Compartilhe sua historia de aventureiro com o Companhia do Aventureiro."
+>
+  <section class="mx-auto max-w-3xl px-4 py-14">
+    <h1 class="text-4xl font-black text-text-primary">Envie sua História</h1>
+    <p class="mt-3 text-text-secondary">
+      Teve uma sessão de RPG memorável? Um jogo de tabuleiro que virou caso? Uma partida de Magic
+      inesquecível? Conta pra gente que a sua história pode virar papo no próximo episódio.
+    </p>
+
+    <div class="mt-10">
+      <ContactForm
+        subjectPrefix="História de aventureiro"
+        messageLabel="Sua história"
+        submitLabel="Enviar história"
+      />
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,68 @@
+---
+import Base from './Base.astro';
+import Player from '../components/Player.tsx';
+
+interface NavEpisode {
+  slug: string;
+  title: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  audioUrl: string;
+  duration: string;
+  durationSeconds: number;
+  pubDate: Date;
+  prev?: NavEpisode;
+  next?: NavEpisode;
+}
+
+const { title, description, image, audioUrl, duration, durationSeconds, pubDate, prev, next } =
+  Astro.props;
+
+const formattedDate = new Intl.DateTimeFormat('pt-BR', {
+  day: '2-digit',
+  month: 'long',
+  year: 'numeric'
+}).format(pubDate);
+---
+
+<Base title={title} description={description} image={image}>
+  <article class="mx-auto max-w-3xl px-4 py-12">
+    <a href="/podcast" class="text-sm text-secondary-light hover:text-accent-yellow">&larr; Todos os episodios</a>
+
+    {image && (
+      <img src={image} alt={title} class="mt-6 w-full rounded-2xl object-cover max-h-96" />
+    )}
+
+    <h1 class="mt-6 text-3xl sm:text-4xl font-black text-text-primary">{title}</h1>
+
+    <div class="mt-2 flex items-center gap-4 text-sm text-text-muted">
+      <span>{formattedDate}</span>
+      <span>{duration}</span>
+    </div>
+
+    <div class="mt-6">
+      <Player client:load audioUrl={audioUrl} title={title} fallbackDuration={durationSeconds} />
+    </div>
+
+    <div class="prose prose-invert prose-p:text-text-secondary max-w-none mt-8 text-text-secondary [&_a]:text-accent-yellow [&_a]:underline">
+      <slot />
+    </div>
+
+    <nav class="mt-12 flex items-center justify-between border-t border-primary-light/20 pt-6 gap-4">
+      {prev ? (
+        <a href={`/podcast/${prev.slug}`} class="text-sm text-text-secondary hover:text-accent-yellow">
+          &larr; {prev.title}
+        </a>
+      ) : <span />}
+      {next ? (
+        <a href={`/podcast/${next.slug}`} class="text-sm text-text-secondary hover:text-accent-yellow text-right">
+          {next.title} &rarr;
+        </a>
+      ) : <span />}
+    </nav>
+  </article>
+</Base>

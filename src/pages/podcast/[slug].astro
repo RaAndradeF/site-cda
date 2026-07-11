@@ -1,0 +1,33 @@
+---
+import Episode from '../../layouts/Episode.astro';
+import { fetchPodcastFeed } from '../../lib/fetchRss';
+
+export async function getStaticPaths() {
+  const feed = await fetchPodcastFeed();
+
+  return feed.episodes.map((episode, index) => ({
+    params: { slug: episode.slug },
+    props: {
+      episode,
+      prev: feed.episodes[index + 1],
+      next: feed.episodes[index - 1]
+    }
+  }));
+}
+
+const { episode, prev, next } = Astro.props;
+---
+
+<Episode
+  title={episode.title}
+  description={episode.description}
+  image={episode.image}
+  audioUrl={episode.audioUrl}
+  duration={episode.duration}
+  durationSeconds={episode.durationSeconds}
+  pubDate={episode.pubDate}
+  prev={prev && { slug: prev.slug, title: prev.title }}
+  next={next && { slug: next.slug, title: next.title }}
+>
+  <Fragment set:html={episode.descriptionHtml} />
+</Episode>

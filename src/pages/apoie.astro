@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE_LINKS } from '../lib/site';
+---
+
+<Base title="Apoie" description="Saiba como apoiar o podcast Companhia do Aventureiro.">
+  <section class="mx-auto max-w-3xl px-4 py-14">
+    <h1 class="text-4xl font-black text-text-primary">Apoie o podcast</h1>
+    <p class="mt-3 text-text-secondary leading-relaxed">
+      A Companhia do Aventureiro é feita com muito carinho, tempo e dados móveis. Se você curte o
+      que a gente faz, aqui estão algumas formas de apoiar o projeto:
+    </p>
+
+    <ul class="mt-8 space-y-4">
+      <li class="rounded-2xl bg-bg-card/80 border border-primary-light/30 p-5">
+        <h2 class="font-bold text-accent-yellow">Ouça, avalie e comente</h2>
+        <p class="mt-1 text-sm text-text-secondary">
+          Deixe uma avaliação 5 estrelas no&nbsp; 
+          <a href={SITE_LINKS.spotify} target="_blank" rel="noopener noreferrer" class="underline hover:text-accent-yellow">Spotify</a>.
+          Isso ajuda muito o podcast a alcançar mais gente.
+        </p>
+      </li>
+      <li class="rounded-2xl bg-bg-card/80 border border-primary-light/30 p-5">
+        <h2 class="font-bold text-accent-yellow">Compartilhe com outros aventureiros</h2>
+        <p class="mt-1 text-sm text-text-secondary">
+          Mande o episódio favorito pra aquele amigo que também curte RPG, Magic e jogos de tabuleiro.
+        </p>
+      </li>
+      <li class="rounded-2xl bg-bg-card/80 border border-primary-light/30 p-5">
+        <h2 class="font-bold text-accent-yellow">Fale com a gente</h2>
+        <p class="mt-1 text-sm text-text-secondary">
+          Mande sugestões de pauta, críticas e elogios para&nbsp;
+          <a href={`mailto:${SITE_LINKS.email}`} class="underline hover:text-accent-yellow">{SITE_LINKS.email}</a>.
+        </p>
+      </li>
+    </ul>
+  </section>
+</Base>

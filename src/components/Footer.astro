@@ -1,0 +1,51 @@
+---
+import { SITE_LINKS, SITE_NAME } from '../lib/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-bg-secondary border-t border-primary-light/20 mt-16">
+  <div class="mx-auto max-w-6xl px-4 py-10 grid gap-8 sm:grid-cols-3">
+    <div>
+      <h3 class="font-bold text-accent-yellow mb-2">{SITE_NAME}</h3>
+      <p class="text-sm text-text-secondary">
+        Um podcast sobre RPG, Magic the Gathering, jogos de tabuleiro, jogos eletrônicos, filmes,
+        séries e (quase) tudo que envolve o universo nerd.
+      </p>
+    </div>
+
+    <div>
+      <h3 class="font-bold text-accent-yellow mb-2">Navegação</h3>
+      <ul class="space-y-1 text-sm text-text-secondary">
+        <li><a href="/podcast" class="hover:text-accent-yellow">Episódios</a></li>
+        <li><a href="/sobre" class="hover:text-accent-yellow">Sobre</a></li>
+        <li><a href="/envie" class="hover:text-accent-yellow">Envie sua História</a></li>
+        <li><a href="/apoie" class="hover:text-accent-yellow">Apoie o podcast</a></li>
+        <li><a href="/contato" class="hover:text-accent-yellow">Contato</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h3 class="font-bold text-accent-yellow mb-2">Acompanhe em</h3>
+      <ul class="space-y-1 text-sm text-text-secondary">
+        <li><a href={SITE_LINKS.spotify} target="_blank" rel="noopener noreferrer" class="hover:text-accent-yellow">Spotify</a></li>
+        <li><a href={SITE_LINKS.applePodcasts} target="_blank" rel="noopener noreferrer" class="hover:text-accent-yellow">Apple Podcasts</a></li>
+        <li><a href={SITE_LINKS.deezer} target="_blank" rel="noopener noreferrer" class="hover:text-accent-yellow">Deezer</a></li>
+        <li><a href={SITE_LINKS.pocketCast} target="_blank" rel="noopener noreferrer" class="hover:text-accent-yellow">Pocket Casts</a></li>
+        <li><a href={SITE_LINKS.rss} class="hover:text-accent-yellow">Feed RSS</a></li>
+        <li><a href={SITE_LINKS.instagram} target="_blank" rel="noopener noreferrer" class="hover:text-accent-yellow">Instagram</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h3 class="font-bold text-accent-yellow mb-2">Contato</h3>
+      <ul class="space-y-1 text-sm text-text-secondary">
+        <li><a href={`mailto:${SITE_LINKS.email}`} class="hover:text-accent-yellow">{SITE_LINKS.email}</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-primary-light/20 py-4 text-center text-xs text-text-muted">
+    &copy; {year} {SITE_NAME}. Todos os direitos reservados.
+  </div>
+</footer>

@@ -1,0 +1,68 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import EpisodeCard from '../components/EpisodeCard.astro';
+import Player from '../components/Player.tsx';
+import { fetchPodcastFeed } from '../lib/fetchRss';
+
+const feed = await fetchPodcastFeed();
+const latest = feed.episodes[0];
+const recent = feed.episodes.slice(1, 4);
+---
+
+<Base title="Companhia do Aventureiro" description={feed.channel.description}>
+  <Hero />
+
+  {latest && (
+    <section class="mx-auto max-w-3xl px-4 -mt-10 relative z-10">
+      <Player client:load audioUrl={latest.audioUrl} title={latest.title} fallbackDuration={latest.durationSeconds} />
+      <p class="mt-3 text-center text-sm text-text-muted">
+        Episódio mais recente &middot;
+        <a href={`/podcast/${latest.slug}`} class="text-accent-yellow hover:underline">ver detalhes</a>
+      </p>
+    </section>
+  )}
+
+  <section class="mx-auto max-w-4xl px-4 py-16 text-center">
+    <h2 class="text-3xl font-black text-text-primary">Conheça!</h2>
+    <p class="mt-4 text-text-secondary leading-relaxed whitespace-pre-line">
+      {feed.channel.description}
+    </p>
+  </section>
+
+  {recent.length > 0 && (
+    <section class="mx-auto max-w-6xl px-4 pb-16">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-black text-text-primary">Episódios recentes</h2>
+        <a href="/podcast" class="text-sm font-semibold text-accent-yellow hover:underline">Ver todos &rarr;</a>
+      </div>
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {recent.map((episode) => (
+          <EpisodeCard
+            slug={episode.slug}
+            title={episode.title}
+            description={episode.description}
+            pubDate={episode.pubDate}
+            duration={episode.duration}
+            image={episode.image}
+          />
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!--<section class="bg-gradient-to-r from-accent-yellow to-accent-yellow-dark">-->  
+  <section class="bg-transparent">
+    <div class="mx-auto max-w-4xl px-4 py-14 text-center">
+      <h2 class="text-2xl sm:text-3xl font-black text-white">Tem uma história de aventureiro pra contar?</h2>
+      <p class="mt-3 text-white/90">
+        Compartilhe suas histórias de mesa, jogatinas ou momentos épicos com a gente.
+      </p>
+      <a
+        href="/envie"
+        class="mt-6 inline-block rounded-full bg-secondary px-8 py-3 font-bold text-primary-dark hover:bg-secondary-light transition-colors">
+        Envie sua História
+      </a>
+    </div>
+  </section>
+</Base>
