@@ -1,6 +1,7 @@
 ---
 import Base from './Base.astro';
 import Player from '../components/Player.tsx';
+import { withBase } from '../lib/site';
 
 interface NavEpisode {
   slug: string;
@@ -31,7 +32,7 @@ const formattedDate = new Intl.DateTimeFormat('pt-BR', {
 
 <Base title={title} description={description} image={image}>
   <article class="mx-auto max-w-3xl px-4 py-12">
-    <a href="/podcast" class="text-sm text-secondary-light hover:text-accent-yellow">&larr; Todos os episodios</a>
+    <a href={withBase('/podcast')} class="text-sm text-secondary-light hover:text-accent-yellow">&larr; Todos os episodios</a>
 
     {image && (
       <img src={image} alt={title} class="mt-6 w-full rounded-2xl object-cover max-h-96" />
@@ -54,12 +55,12 @@ const formattedDate = new Intl.DateTimeFormat('pt-BR', {
 
     <nav class="mt-12 flex items-center justify-between border-t border-primary-light/20 pt-6 gap-4">
       {prev ? (
-        <a href={`/podcast/${prev.slug}`} class="text-sm text-text-secondary hover:text-accent-yellow">
+        <a href={withBase(`/podcast/${prev.slug}`)} class="text-sm text-text-secondary hover:text-accent-yellow">
           &larr; {prev.title}
         </a>
       ) : <span />}
       {next ? (
-        <a href={`/podcast/${next.slug}`} class="text-sm text-text-secondary hover:text-accent-yellow text-right">
+        <a href={withBase(`/podcast/${next.slug}`)} class="text-sm text-text-secondary hover:text-accent-yellow text-right">
           {next.title} &rarr;
         </a>
       ) : <span />}

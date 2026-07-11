@@ -1,22 +1,24 @@
 ---
 import { Image } from 'astro:assets';
 import headerIcon from '../assets/images/headerIcon.png';
+import { withBase } from '../lib/site';
 
 const navLinks = [
-  { href: '/', label: 'Início' },
-  { href: '/podcast', label: 'Podcast' },
-  { href: '/sobre', label: 'Sobre' },
-  { href: '/envie', label: 'Envie sua História' },
-  { href: '/apoie', label: 'Apoie' },
-  { href: '/contato', label: 'Contato' }
+  { href: withBase('/'), label: 'Início' },
+  { href: withBase('/podcast'), label: 'Podcast' },
+  { href: withBase('/sobre'), label: 'Sobre' },
+  { href: withBase('/envie'), label: 'Envie sua História' },
+  { href: withBase('/apoie'), label: 'Apoie' },
+  { href: withBase('/contato'), label: 'Contato' }
 ];
 
-const currentPath = Astro.url.pathname;
+const normalizePath = (path: string) => path.replace(/\/$/, '') || '/';
+const currentPath = normalizePath(Astro.url.pathname);
 ---
 
 <header class="sticky top-0 z-50 bg-bg-primary/95 backdrop-blur border-b border-primary-light/20">
   <div class="mx-auto max-w-6xl px-4 flex items-center justify-between h-16">
-    <a href="/" class="flex items-center gap-2 font-bold text-lg text-accent-yellow">
+    <a href={withBase('/')} class="flex items-center gap-2 font-bold text-lg text-accent-yellow">
       <span class="inline-block h-9 w-9 rounded-full bg-transparent text-white grid place-items-center font-black">
         <Image src={headerIcon} alt="Ícone" width={200} height={200} />
       </span>
@@ -28,7 +30,7 @@ const currentPath = Astro.url.pathname;
         <a
           href={link.href}
           class={`text-sm font-medium transition-colors hover:text-accent-yellow ${
-            currentPath === link.href ? 'text-accent-yellow' : 'text-text-secondary'
+            currentPath === normalizePath(link.href) ? 'text-accent-yellow' : 'text-text-secondary'
           }`}
         >
           {link.label}
@@ -59,7 +61,7 @@ const currentPath = Astro.url.pathname;
     {navLinks.map((link) => (
       <a
         href={link.href}
-        class={`py-2 text-sm font-medium ${currentPath === link.href ? 'text-accent-yellow' : 'text-text-secondary'}`}
+        class={`py-2 text-sm font-medium ${currentPath === normalizePath(link.href) ? 'text-accent-yellow' : 'text-text-secondary'}`}
       >
         {link.label}
       </a>

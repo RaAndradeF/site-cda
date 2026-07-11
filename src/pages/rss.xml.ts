@@ -12,7 +12,8 @@ function escapeXml(value: string): string {
 
 export const GET: APIRoute = async ({ site }) => {
   const feed = await fetchPodcastFeed();
-  const siteUrl = site?.toString().replace(/\/$/, '') ?? '';
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+  const siteUrl = `${site?.toString().replace(/\/$/, '') ?? ''}${base}`;
 
   const items = feed.episodes
     .map(

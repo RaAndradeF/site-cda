@@ -1,4 +1,6 @@
 ---
+import { withBase } from '../lib/site';
+
 interface Props {
   slug: string;
   title: string;
@@ -19,7 +21,7 @@ const formattedDate = new Intl.DateTimeFormat('pt-BR', {
 ---
 
 <a
-  href={`/podcast/${slug}`}
+  href={withBase(`/podcast/${slug}`)}
   class={`group flex flex-col rounded-2xl bg-bg-card/80 border overflow-hidden transition-colors ${
     featured ? 'border-accent-yellow' : 'border-primary-light/30 hover:border-accent-yellow'
   }`}

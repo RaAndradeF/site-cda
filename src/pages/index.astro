@@ -4,6 +4,7 @@ import Hero from '../components/Hero.astro';
 import EpisodeCard from '../components/EpisodeCard.astro';
 import Player from '../components/Player.tsx';
 import { fetchPodcastFeed } from '../lib/fetchRss';
+import { withBase } from '../lib/site';
 
 const feed = await fetchPodcastFeed();
 const latest = feed.episodes[0];
@@ -18,7 +19,7 @@ const recent = feed.episodes.slice(1, 4);
       <Player client:load audioUrl={latest.audioUrl} title={latest.title} fallbackDuration={latest.durationSeconds} />
       <p class="mt-3 text-center text-sm text-text-muted">
         Episódio mais recente &middot;
-        <a href={`/podcast/${latest.slug}`} class="text-accent-yellow hover:underline">ver detalhes</a>
+        <a href={withBase(`/podcast/${latest.slug}`)} class="text-accent-yellow hover:underline">ver detalhes</a>
       </p>
     </section>
   )}
@@ -34,7 +35,7 @@ const recent = feed.episodes.slice(1, 4);
     <section class="mx-auto max-w-6xl px-4 pb-16">
       <div class="flex items-center justify-between mb-6">
         <h2 class="text-2xl font-black text-text-primary">Episódios recentes</h2>
-        <a href="/podcast" class="text-sm font-semibold text-accent-yellow hover:underline">Ver todos &rarr;</a>
+        <a href={withBase('/podcast')} class="text-sm font-semibold text-accent-yellow hover:underline">Ver todos &rarr;</a>
       </div>
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {recent.map((episode) => (
@@ -59,7 +60,7 @@ const recent = feed.episodes.slice(1, 4);
         Compartilhe suas histórias de mesa, jogatinas ou momentos épicos com a gente.
       </p>
       <a
-        href="/envie"
+        href={withBase('/envie')}
         class="mt-6 inline-block rounded-full bg-secondary px-8 py-3 font-bold text-primary-dark hover:bg-secondary-light transition-colors">
         Envie sua História
       </a>

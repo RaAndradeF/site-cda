@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import Fuse from 'fuse.js';
 import { Clock, Calendar } from 'lucide-react';
 import SearchBar from './SearchBar';
+import { withBase } from '../lib/site';
 
 export interface EpisodeListItem {
   slug: string;
@@ -56,7 +57,7 @@ export default function EpisodeList({ episodes }: EpisodeListProps) {
           {results.map((episode) => (
             <a
               key={episode.slug}
-              href={`/podcast/${episode.slug}`}
+              href={withBase(`/podcast/${episode.slug}`)}
               className="group flex flex-col rounded-2xl bg-bg-card/80 border border-primary-light/30 overflow-hidden hover:border-accent-yellow transition-colors"
             >
               {episode.image && (

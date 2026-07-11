@@ -1,8 +1,20 @@
+// Prefixa um caminho absoluto com o base path configurado em astro.config.mjs
+// (necessario porque o site e servido em /site-cda no GitHub Pages).
+// URLs externas (http/https, mailto, #, etc.) sao retornadas sem alteracao.
+export function withBase(path: string): string {
+  if (/^([a-z][a-z0-9+.-]*:|#|\/\/)/i.test(path)) return path;
+
+  const base = import.meta.env.BASE_URL ?? '/';
+  const trimmedBase = base.endsWith('/') ? base.slice(0, -1) : base;
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  return `${trimmedBase}${normalizedPath}`;
+}
+
 // Links confirmados a partir do feed RSS real. Os marcados como placeholder
 // devem ser substituidos pelos links reais quando disponiveis (ver MANUAL.md).
 export const SITE_LINKS = {
   spotify: 'https://open.spotify.com/show/7DzN9JRFS29LV6HlB1PeYc?si=a7419f4553654433',
-  rss: '/rss.xml',
+  rss: withBase('/rss.xml'),
   email: 'companhiadoaventureiro@gmail.com',
   instagram: 'https://instagram.com/companhiadoaventureiro',
   // placeholders: substituir pelos links reais das plataformas
